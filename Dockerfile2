@@ -1,0 +1,23 @@
+FROM node:lts-alpine
+RUN npm install -g http-server
+RUN npm install -g forever 
+RUN npm install -g forever-service	
+
+
+RUN mkdir -p /tl-editor
+
+
+COPY . /tl-editor 
+WORKDIR /tl-editor
+RUN npm install
+
+ENV NODE_ENV=build
+
+COPY . /tl-editor
+RUN npm run build 
+#RUN  npm run build && forever start --minUptime 1000 --spinSleepTime 1000 nuxt.config.js
+ENV HOST 0.0.0.0
+EXPOSE 3000
+
+#could change to start
+CMD [ "npm", "start"]
